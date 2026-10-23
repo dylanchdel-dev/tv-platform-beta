@@ -1,0 +1,37 @@
+name: Publicar beta temporal
+on:
+  push:
+    branches: [main]
+    paths:
+      - SenalSur_GitHub_Pages_beta.zip
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extraer la beta ya compilada y verificada
+        run: |
+          unzip -q SenalSur_GitHub_Pages_beta.zip 'tv-platform-github-pages/out/*' -d staging
+          mv staging/tv-platform-github-pages/out out
+          test -f out/index.html
+          test -f out/catalog.json
+          python3 -c 'import json; d=json.load(open("out/catalog.json")); assert len(d["channels"])==1615; assert sum(len(c["feeds"]) for c in d["channels"])==1752; assert sum(len(f["candidates"]) for c in d["channels"] for f in c["feeds"])==941; print("Catalogo verificado: 1615 canales, 1752 feeds, 941 streams")'
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4
