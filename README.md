@@ -1,59 +1,45 @@
-# SeñalSur — beta pública temporal
+# SeñalSur — beta temporal con señales comprobadas
 
-**Web:** https://dylanchdel-dev.github.io/tv-platform-beta/
+Web: https://dylanchdel-dev.github.io/tv-platform-beta/
 
-Repositorio independiente: `dylanchdel-dev/tv-platform-beta`. No se modificaron otros proyectos de GitHub. El proyecto completo Next.js + Prisma + PostgreSQL y su respaldo PGlite original permanecen intactos por separado.
+## Selección pública — 23/10/2026
 
-## Estado del despliegue
+La beta publica únicamente **13 canales, 13 feeds y 13 streams HTTPS** cuya reproducción fue comprobada desde la aplicación pública en Chrome de Work. Se observó video decodificado y avance del tiempo, no solo una respuesta HTTP o un manifiesto HLS. Se excluyeron también los feeds vacíos y las alternativas que no fueron probadas de los canales aprobados.
 
-GitHub Actions finalizó con **Success** en la primera ejecución del workflow `Publicar beta temporal`:
-https://github.com/dylanchdel-dev/tv-platform-beta/actions/runs/39879336661
+Cada tarjeta muestra la fecha de comprobación. `out/validation.json` y `public/validation.json` registran canal, feed, stream, hash SHA-256 de la URL y métricas observadas. El workflow exige una prueba positiva para cada candidato publicado y rechaza URLs o IDs sin evidencia correspondiente. Son pruebas manuales del día indicado; **no garantizan disponibilidad permanente, acceso desde todas las regiones ni derechos o identidad editorial de retransmisiones externas**. No hay checker automático ni proxy.
 
-La beta se publica desde el export estático ya compilado y verificado incluido en `SenalSur_GitHub_Pages_beta.zip`. El workflow extrae `tv-platform-github-pages/out/`, comprueba los conteos y lo publica mediante las acciones oficiales de GitHub Pages. No necesita volver a compilar ni descargar datos de iptv-org.
+| Canal | Tiempo observado | Ancho decodificado |
+| --- | ---: | ---: |
+| Antena SUR | 32.4 s | 1920 px |
+| Caritas TV | 32.3 s | 1920 px |
+| ESPN 2 Latin America | 100.8 s | 1920 px |
+| ESPN 3 Latin America | 49.0 s | 1920 px |
+| Monterrico TV | 35.5 s | 1920 px |
+| ESPN 4 Latin America | 48.4 s | 1920 px |
+| CRTV | 36.6 s | 1280 px |
+| Canal Showsport | 38.2 s | 960 px |
+| ESPN 5 Latin America | 46.5 s | 1920 px |
+| ESPN 6 Latin America | 101.2 s | 1920 px |
+| ESPN 7 Latin America | 45.6 s | 1920 px |
+| ESPN Latin America | 101.8 s | 1920 px |
+| FIFA+ | 33.8 s | 1280 px |
 
-## Datos y funciones
+## Catálogo original conservado
 
-- Catálogo del **17/10/2026**: **1.615 canales, 1.752 feeds y 941 candidatos de reproducción**.
-- Búsqueda por nombre, ID externo y nombres alternativos; filtros por país y categoría; 25 canales por página.
-- Argentina 498, Chile 497, Perú 420 y Paraguay 161; otros países 39.
-- Detalle del canal, selección manual de feed y alternativas dentro de la misma señal.
-- Diseño público, componente de logos, HlsPlayer y política de reproducción originales conservados.
-- Catálogo de lectura; no hay actualización automática.
+El snapshot completo del 17/10/2026 contiene 1.615 canales, 1.752 feeds, 941 streams y 1.646 logos. Permanece intacto en el proyecto original y sus respaldos. Esas cifras **no son el contenido de la selección pública actual**. No se reimportaron datos ni se modificaron URLs de proveedores. El inventario histórico de deportes se conserva en [SPORTS_VALIDATION.md](SPORTS_VALIDATION.md).
 
-## Comprobaciones sobre la URL pública
+TNT Sports Argentina/Chile, ESPN Premium, TyC Sports, L1 Max, Tigo Sports+, Teletrak, Turf Móvil y Sqala no tienen prueba positiva aplicable y quedan fuera. Ver ESPN u otro canal no demuestra que transmita un partido concreto. No está confirmada la cobertura completa de Liga Argentina, Liga Chilena, Libertadores, Copa Argentina, Copa Chile, Sudamericana o Champions.
 
-Se abrió la web real en el navegador de Work y se verificaron: inicio con 25 tarjetas y total 1.615; segunda página distinta; los cuatro filtros nacionales y sus conteos; búsqueda de 13C combinada con Chile y Culture; detalle de canal; recarga directa del enlace de Antena SUR; canal Metro sin stream con el mensaje esperado; rutas `/admin/` y `/api/admin/status/` sin servicio administrativo (página 404).
+## Publicación y mantenimiento
 
-Escritorio público revisado a 1.363 píxeles de ancho, sin desbordamiento horizontal. Vista móvil 390×844 revisada localmente sobre el mismo export publicado; no se probó en un dispositivo físico.
+Repositorio independiente `dylanchdel-dev/tv-platform-beta`; no se modifican otros proyectos. El ZIP incluye fuentes, lockfile y export estático compilado bajo `tv-platform-github-pages/`. `.github/workflows/pages.yml` extrae y valida `out/` antes de publicar mediante las acciones oficiales de GitHub Pages. Settings → Pages → Source: GitHub Actions. Se activa al cambiar el ZIP o el workflow en main.
 
-### Reproducción real, sin interceptar los proveedores
+Para actualizar: comprobar reproducción real de cada URL; actualizar catálogo y manifiesto con la misma fecha e IDs; ejecutar `npm run build` (Node.js 24), validar la correspondencia y reemplazar el ZIP con su estructura actual. No publicar el respaldo completo como catálogo sin nuevas pruebas. No hacen falta `.env` ni DATABASE_URL para esta adaptación.
 
-| Canal | Resultado desde la web publicada |
-| --- | --- |
-| Caritas TV (Paraguay) | Reproducción confirmada: estado playing, video de 1.920 píxeles de ancho y tiempo superior a 25 segundos. |
-| Antena SUR (Perú) | Reproducción confirmada: estado playing, video de 1.920 píxeles de ancho y tiempo superior a 21 segundos. |
-| 13C (Chile) | Falló con estado NETWORK, sin imagen decodificada. No se atribuye una causa más específica sin evidencia. |
+Búsqueda, filtros, diseño, logos y reproductor existentes conservados. Con 13 canales todos caben en una sola página. Las rutas usan `/channel/?id=UUID&feed=UUID`; enlaces antiguos fuera de la selección muestran que la señal no está validada.
 
-Estos resultados corresponden a esta prueba y ubicación. No garantizan disponibilidad permanente ni reproducción de todos los candidatos del catálogo.
+## Límites del hosting temporal
 
-## Límites de la versión temporal
+GitHub Pages es estático: **no hay PostgreSQL, panel administrativo, login ni APIs administrativas** en esta beta. Las rutas administrativas no tienen backend. No contiene secretos, credenciales, cuentas administrativas ni datos de auditoría.
 
-GitHub Pages sirve archivos estáticos. Esta adaptación **no incluye PostgreSQL, panel administrativo, login ni APIs administrativas**. No hay contraseñas predeterminadas, credenciales de base, notas administrativas o auditoría en los datos publicados.
-
-Las URLs de stream son necesariamente visibles para el navegador. HTTPS, permisos CORS, cabeceras obligatorias, geobloqueos y disponibilidad externa siguen aplicándose. No hay proxy de video ni se eluden restricciones. Algunos logos externos pueden fallar; se mantiene el fallback original.
-
-Las páginas usan `/channel/?id=UUID&feed=UUID` para funcionar y recargarse en hosting estático. No se implementaron funciones adicionales.
-
-## Mantener esta publicación
-
-- **Settings → Pages → Source: GitHub Actions**.
-- El workflow `.github/workflows/pages.yml` se activa al actualizar el ZIP o el propio workflow; los cambios del README no vuelven a desplegar el sitio.
-- Para actualizar la beta, generar y verificar un nuevo export con el prefijo `/tv-platform-beta` y reemplazar el ZIP conservando su estructura; revisar los conteos esperados del workflow si cambian los datos.
-- Los archivos fuente y el lockfile están dentro del ZIP. Para trabajar en esa copia: Node.js 24, `npm ci`, `npm run dev` y `npm run build`. La salida es `out/`; no necesita `.env` ni DATABASE_URL.
-- Para recuperar el proyecto completo y su administración, retomar el despliegue original de Railway con PostgreSQL real y el respaldo ya verificado.
-
-## Revisión de Deportes y etiquetas — 23/10/2026
-
-Se revisaron las 60 entradas y se probaron las 17 con candidatos directos compatibles: 11 reprodujeron video y 6 fallaron. Otras 11 solo tienen fuentes incompatibles y 32 no tienen URL. Ver [SPORTS_VALIDATION.md](SPORTS_VALIDATION.md) para el inventario completo y los límites de esta comprobación.
-
-Las tarjetas ahora distinguen fuentes por comprobar, incompatibles y ausentes; ya no confirman disponibilidad sin probar la conexión. No se modificaron el catálogo ni el reproductor.
+Railway sigue siendo el destino del proyecto completo Next.js + Prisma + PostgreSQL y administración. Cambiar el hosting no elimina CORS, bloqueos regionales, HTTP incompatible con HTTPS o errores externos del proveedor. Para restaurar el proyecto completo debe retomarse el despliegue Railway y el respaldo ya verificado; no se declara realizado aquí.
