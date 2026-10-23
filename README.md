@@ -51,3 +51,9 @@ Las páginas usan `/channel/?id=UUID&feed=UUID` para funcionar y recargarse en h
 - Para actualizar la beta, generar y verificar un nuevo export con el prefijo `/tv-platform-beta` y reemplazar el ZIP conservando su estructura; revisar los conteos esperados del workflow si cambian los datos.
 - Los archivos fuente y el lockfile están dentro del ZIP. Para trabajar en esa copia: Node.js 24, `npm ci`, `npm run dev` y `npm run build`. La salida es `out/`; no necesita `.env` ni DATABASE_URL.
 - Para recuperar el proyecto completo y su administración, retomar el despliegue original de Railway con PostgreSQL real y el respaldo ya verificado.
+
+## Revisión de Deportes y etiquetas — 23/10/2026
+
+Se revisaron las 60 entradas y se probaron las 17 con candidatos directos compatibles: 11 reprodujeron video y 6 fallaron. Otras 11 solo tienen fuentes incompatibles y 32 no tienen URL. Ver [SPORTS_VALIDATION.md](SPORTS_VALIDATION.md) para el inventario completo y los límites de esta comprobación.
+
+Las tarjetas ahora distinguen fuentes por comprobar, incompatibles y ausentes; ya no confirman disponibilidad sin probar la conexión. No se modificaron el catálogo ni el reproductor.
