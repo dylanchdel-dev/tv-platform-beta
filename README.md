@@ -4,7 +4,7 @@ Web: https://dylanchdel-dev.github.io/tv-platform-beta/
 
 ## Selección pública — 23/10/2026
 
-La beta publica únicamente **14 canales, 15 feeds y 15 streams HTTPS** cuya reproducción fue comprobada en Chrome de Work. Las 13 señales iniciales se probaron desde la aplicación pública; las dos señales de TyC se comprobaron inicialmente en el banco oficial HTTPS de hls.js y requieren la comprobación final de la beta tras publicar. Se observó video decodificado y avance del tiempo, no solo una respuesta HTTP o un manifiesto HLS. Se excluyeron también los feeds vacíos y las alternativas que no fueron probadas de los canales aprobados.
+La beta publica únicamente **14 canales, 14 feeds y 14 streams HTTPS** cuya reproducción fue comprobada en Chrome de Work. Las 13 señales iniciales se probaron desde la aplicación pública. TyC Sports / tyc24 también superó la prueba desde la beta publicada: video 1920×1080, estado playing y tiempo avanzando hasta 80,8 segundos. Se observó video decodificado y avance del tiempo, no solo una respuesta HTTP o un manifiesto HLS. Se excluyeron también los feeds vacíos y las alternativas que no fueron probadas de los canales aprobados.
 
 Cada tarjeta muestra la fecha de comprobación. `out/validation.json` y `public/validation.json` registran canal, feed, stream, hash SHA-256 de la URL y métricas observadas. El workflow exige una prueba positiva para cada candidato publicado y rechaza URLs o IDs sin evidencia correspondiente. Son pruebas manuales del día indicado; **no garantizan disponibilidad permanente, acceso desde todas las regiones ni derechos o identidad editorial de retransmisiones externas**. No hay checker automático ni proxy.
 
@@ -23,8 +23,7 @@ Cada tarjeta muestra la fecha de comprobación. `out/validation.json` y `public/
 | ESPN 7 Latin America | 45.6 s | 1920 px |
 | ESPN Latin America | 101.8 s | 1920 px |
 | FIFA+ | 33.8 s | 1280 px |
-| TyC Sports · tyc24 (banco hls.js) | 86.3 s | 1920 px |
-| TyC Sports Fan (banco hls.js) | 19.9 s | 1920 px |
+| TyC Sports · tyc24 (beta pública) | 80.8 s | 1920 px |
 
 ## Catálogo original conservado
 
@@ -48,8 +47,12 @@ Railway sigue siendo el destino del proyecto completo Next.js + Prisma + Postgre
 
 ## Integración focalizada de TyC — 23/10/2026
 
-Se cargaron siete URLs de la revisión iptv-org eb57e1587128c80bff25c598b3367d009ec6c803 en el banco oficial de hls.js sobre HTTPS. Dos reprodujeron video: TyC Sports / tyc24 y la fuente Amagi, que mostró la marca **TyC Sports Fan**. Por tener programación diferente, se publican como feeds separados y no como alternativas automáticas del mismo feed. Se conserva el ID existente de TyC y el del stream; se genera un feed distinto para Fan. La opción User-Agent de VLC de tyc24 no fue necesaria en esta comprobación y se retira únicamente para esa URL. No se cambia la política general ni el reproductor.
+Se probaron siete URLs de iptv-org, revisión eb57e1587128c80bff25c598b3367d009ec6c803, en el banco oficial HTTPS de hls.js. TyC Sports / tyc24 y Amagi reprodujeron allí. La marca observada en Amagi fue TyC Sports Fan, con programación distinta; se preparó un feed separado para evitar mezclarlas como alternativas automáticas.
 
-ESPN Premium Chile devolvió 403 al cargar el manifiesto. ESPN Premium Argentina y tres fuentes DSports, todas HTTP, fallaron al cargarse desde el banco HTTPS, sin video decodificado. No se publican estas cinco fuentes. TNT Sports y Disney+ no tienen una URL que integrar en la revisión examinada. La prueba técnica no confirma partidos futuros, acceso desde otras regiones o disponibilidad permanente.
+La verificación desde la aplicación publicada confirmó únicamente **TyC Sports / tyc24**: video 1920×1080, playing y avance de 5,8 a 34,2 y 80,8 s. La opción User-Agent de VLC no fue necesaria y se retiró solo para esa URL, conservando el reproductor y la política general. El stream y feed de TyC mantienen sus IDs originales.
 
-Actualización solo de catálogo y evidencia: se conservó la compilación pública existente y se reemplazaron out/catalog.json y out/validation.json. El workflow verificó localmente la correspondencia exacta entre cada URL aprobada y su prueba.
+**TyC Sports Fan no superó la prueba en la beta pública:** falló con NETWORK y videoWidth 0, también tras un reintento. Se retira del catálogo y del manifiesto de aprobados; no debe figurar como señal pública validada. La causa precisa no se atribuye a CORS o región sin evidencia adicional. Que funcionara en el banco externo no sustituyó la prueba del sitio real.
+
+ESPN Premium Chile devolvió HTTP 403 al cargar el manifiesto. ESPN Premium Argentina y tres fuentes DSports, todas HTTP, fallaron desde el banco HTTPS, con manifestLoadError y sin video decodificado; esto no demuestra que sus servidores estén caídos. Estas cinco fuentes tampoco se publican. TNT Sports y Disney+ no tienen URL para integrar en la revisión examinada.
+
+Actualización solo de datos: export estático existente conservado, sin recompilar; se reemplazaron out/catalog.json y out/validation.json y se verificó su correspondencia exacta con las pruebas. El catálogo completo original y el respaldo PGlite permanecen intactos. No se reimportaron datos, no se añadió proxy ni se modificó la seguridad del navegador. La reproducción observada no garantiza acceso desde otras regiones, disponibilidad permanente o cobertura de un partido futuro. En la prueba prolongada de tyc24 en hls.js hubo un buffer stall que se recuperó; la comprobación posterior en la beta tuvo video en movimiento.

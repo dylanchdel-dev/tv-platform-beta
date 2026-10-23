@@ -1,6 +1,6 @@
 # Revisión de Deportes — 23/10/2026
 
-> Registro histórico anterior al filtro público. La selección inicial publicó 13 señales comprobadas. La revisión posterior de TyC incorpora dos feeds diferenciados solo tras una nueva prueba positiva; ver el estado vigente en README. Los resultados de esta tabla son históricos; TyC fue probado nuevamente con resultado positivo y se documenta por separado en README. Ver README y validation.json.
+> Registro histórico anterior al filtro público. La selección inicial publicó 13 señales comprobadas. La revisión posterior de TyC incorpora únicamente tyc24 tras una nueva prueba positiva desde la beta. TyC Sports Fan falló en la aplicación y se retiró; ver README. Los resultados de esta tabla son históricos; TyC fue probado nuevamente con resultado positivo y se documenta por separado en README. Ver README y validation.json.
 
 Se revisaron las 60 entradas de Deportes del catálogo original publicado, sin importar nuevos datos ni modificar URLs. Las 17 entradas con al menos un candidato HTTPS sin cabeceras obligatorias se probaron desde la URL pública en Chrome de Work, pulsando «Reproducir señal». Se confirmó video mediante estado `playing`, dimensiones decodificadas y avance del tiempo; no solo descarga de un manifiesto.
 
