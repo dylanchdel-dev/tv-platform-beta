@@ -1,6 +1,6 @@
 # Revisión de Deportes — 23/10/2026
 
-> Registro histórico anterior al filtro público. La publicación actual contiene solo 13 señales comprobadas, con un único feed y URL aprobados por canal. Los canales fallidos o sin fuente de esta tabla ya no aparecen en la beta. Ver README y validation.json.
+> Registro histórico anterior al filtro público. La selección inicial publicó 13 señales comprobadas. La revisión posterior de TyC incorpora dos feeds diferenciados solo tras una nueva prueba positiva; ver el estado vigente en README. Los resultados de esta tabla son históricos; TyC fue probado nuevamente con resultado positivo y se documenta por separado en README. Ver README y validation.json.
 
 Se revisaron las 60 entradas de Deportes del catálogo original publicado, sin importar nuevos datos ni modificar URLs. Las 17 entradas con al menos un candidato HTTPS sin cabeceras obligatorias se probaron desde la URL pública en Chrome de Work, pulsando «Reproducir señal». Se confirmó video mediante estado `playing`, dimensiones decodificadas y avance del tiempo; no solo descarga de un manifiesto.
 
