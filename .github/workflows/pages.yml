@@ -26,8 +26,30 @@ jobs:
           unzip -q SenalSur_GitHub_Pages_beta.zip 'tv-platform-github-pages/out/*' -d staging
           mv staging/tv-platform-github-pages/out out
           test -f out/index.html
-          test -f out/catalog.json
-          python3 -c 'import json; d=json.load(open("out/catalog.json")); assert len(d["channels"])==1615; assert sum(len(c["feeds"]) for c in d["channels"])==1752; assert sum(len(f["candidates"]) for c in d["channels"] for f in c["feeds"])==941; print("Catalogo verificado: 1615 canales, 1752 feeds, 941 streams")'
+          python3 - <<'PYTHON'
+          import json, hashlib
+          d=json.load(open('out/catalog.json'))
+          m=json.load(open('out/validation.json'))
+          assert d['publicationMode']=='verified-only'
+          approved={(x['channelId'],x['feedId'],x['streamId']):x for x in m['approved']}
+          actual={}
+          assert d['channels'] and len(approved)==len(m['approved'])
+          for c in d['channels']:
+              assert c['validatedOn']==m['validatedOn']==d['validatedOn'] and c['feeds']
+              for f in c['feeds']:
+                  assert f['candidates']
+                  for s in f['candidates']:
+                      key=(c['id'],f['id'],s['id'])
+                      proof=approved[key]
+                      assert key not in actual and proof['phase']=='playing'
+                      assert proof['seconds']>=15 and proof['videoWidth']>0
+                      assert proof['validatedOn']==d['validatedOn']
+                      assert s['url'].startswith('https://') and not s['requiresHeaders']
+                      assert hashlib.sha256(s['url'].encode()).hexdigest()==proof['urlSha256']
+                      actual[key]=True
+          assert actual.keys()==approved.keys()
+          print(f"Seleccion validada: {len(d['channels'])} canales, {len(actual)} streams")
+          PYTHON
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
